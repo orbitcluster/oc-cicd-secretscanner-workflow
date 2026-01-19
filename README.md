@@ -66,12 +66,30 @@ Copyright © 2026 OrbitCluster. All rights reserved.
 
 ## Usage as GitHub Action
 
-You can use this repository as a reusable GitHub Action in your workflows.
+This repository can be used as a [Composite Action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) to instantly add secret scanning to your own workflows.
+
+### Example Workflow
+
+Add the following step to your `.github/workflows/pipeline.yml`:
 
 ```yaml
 jobs:
-  security:
+  security-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: orbitcluster/oc-cicd-secretscanner-workflow@main
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Important: Gitleaks needs history to detect leaks in past commits
+
+      - name: Run Secret Scanner
+        uses: orbitcluster/oc-cicd-secretscanner-workflow@v1.0.0
+        with:
+          fetch-depth: 0 # Optional: Set fetch-depth for the internal checkout if not already checked out
 ```
+
+### Inputs
+
+| Input         | Description                                                                            | Default |
+| :------------ | :------------------------------------------------------------------------------------- | :------ |
+| `fetch-depth` | Number of commits to fetch. `0` fetches all history (recommended for secret scanning). | `0`     |
