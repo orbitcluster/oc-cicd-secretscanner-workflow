@@ -1,8 +1,8 @@
-# OrbitCluster CI/CD Secret Scanner Workflow
+# CI/CD Secret Scanner Workflow
 
 ## Mission & Purpose
 
-This repository serves as a foundational component of the OrbitCluster CI/CD secure supply chain. Its primary mission is to **proactively prevent sensitive data leaks**—such as API keys, credentials, and tokens—from entering our codebases.
+This repository serves as a foundational component of the CI/CD secure supply chain. Its primary mission is to **proactively prevent sensitive data leaks**—such as API keys, credentials, and tokens—from entering our codebases.
 
 In modern cloud-native development, the accidental exposure of secrets is a critical vulnerability. This project mitigates that risk by implementing a "shift-left" security strategy, integrating advanced secret scanning at two critical checkpoints:
 
