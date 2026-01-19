@@ -63,3 +63,15 @@ If Gitleaks detects a secret, the commit will be blocked. You must remove the se
 ## License
 
 Copyright © 2026 OrbitCluster. All rights reserved.
+
+## Usage as GitHub Action
+
+You can use this repository as a reusable GitHub Action in your workflows.
+
+```yaml
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: orbitcluster/oc-cicd-secretscanner-workflow@main
+```
