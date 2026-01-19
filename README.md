@@ -1,8 +1,8 @@
-# OrbitCluster CI/CD Secret Scanner Workflow
+# CI/CD Secret Scanner Workflow
 
 ## Mission & Purpose
 
-This repository serves as a foundational component of the OrbitCluster CI/CD secure supply chain. Its primary mission is to **proactively prevent sensitive data leaks**—such as API keys, credentials, and tokens—from entering our codebases.
+This repository serves as a foundational component of the CI/CD secure supply chain. Its primary mission is to **proactively prevent sensitive data leaks**—such as API keys, credentials, and tokens—from entering our codebases.
 
 In modern cloud-native development, the accidental exposure of secrets is a critical vulnerability. This project mitigates that risk by implementing a "shift-left" security strategy, integrating advanced secret scanning at two critical checkpoints:
 
@@ -63,3 +63,33 @@ If Gitleaks detects a secret, the commit will be blocked. You must remove the se
 ## License
 
 Copyright © 2026 OrbitCluster. All rights reserved.
+
+## Usage as GitHub Action
+
+This repository can be used as a [Composite Action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) to instantly add secret scanning to your own workflows.
+
+### Example Workflow
+
+Add the following step to your `.github/workflows/pipeline.yml`:
+
+```yaml
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Important: Gitleaks needs history to detect leaks in past commits
+
+      - name: Run Secret Scanner
+        uses: orbitcluster/oc-cicd-secretscanner-workflow@v1.0.0
+        with:
+          fetch-depth: 0 # Optional: Set fetch-depth for the internal checkout if not already checked out
+```
+
+### Inputs
+
+| Input         | Description                                                                            | Default |
+| :------------ | :------------------------------------------------------------------------------------- | :------ |
+| `fetch-depth` | Number of commits to fetch. `0` fetches all history (recommended for secret scanning). | `0`     |
