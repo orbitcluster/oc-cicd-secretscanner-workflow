@@ -11,15 +11,14 @@ In modern cloud-native development, the accidental exposure of secrets is a crit
 
 ## Key Features
 
-### 🛡️ Automated Secret Detection (Gitleaks)
+### 🛡️ Automated Secret Detection (Talisman)
 
-We utilize [Gitleaks](https://github.com/gitleaks/gitleaks), a powerful SAST tool, to detect hardcoded secrets like passwords, API keys, and tokens. Gitleaks is configured to scan the entire history of the repository as well as uncommitted changes.
+We utilize [Talisman](https://github.com/thoughtworks/talisman), a powerful tool, to detect hardcoded secrets like passwords, API keys, and tokens. Talisman is configured to scan the repository for potential leaks.
 
 ### 🪝 Robust Pre-commit Hooks
 
 To maintain a high standard of code hygiene and security, this repository comes configured with a suite of **pre-commit hooks**. These hooks run automatically every time `git commit` is executed, performing the following checks:
 
-- **Secret Scanning**: Runs Gitleaks to block commits containing secrets.
 - **Whitespace Trimming**: Removes trailing whitespace to prevent diff noise.
 - **File Endings**: Ensures files end with a newline character.
 - **YAML Validation**: Verifies the syntax of `yaml` files.
@@ -27,7 +26,7 @@ To maintain a high standard of code hygiene and security, this repository comes 
 
 ### 🤖 GitHub Actions Workflow
 
-A dedicated CI/CD workflow (`.github/workflows/main.yml`) is set up to run Gitleaks on `push` and `pull_request` events. This ensures that even if a pre-commit hook is bypassed, the CI pipeline will catch and block insecure code from being merged.
+A dedicated CI/CD workflow (`.github/workflows/main.yml`) is set up to run Talisman on `push` and `pull_request` events. This ensures that even if a pre-commit hook is bypassed, the CI pipeline will catch and block insecure code from being merged.
 
 ## Getting Started
 
@@ -58,7 +57,7 @@ Once installed, the hooks will run automatically on `git commit`. You can also t
 pre-commit run --all-files
 ```
 
-If Gitleaks detects a secret, the commit will be blocked. You must remove the secret and try committing again.
+If Talisman detects a secret, the commit will be blocked. You must remove the secret and try committing again.
 
 ## License
 
@@ -80,7 +79,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Important: Gitleaks needs history to detect leaks in past commits
+          fetch-depth: 0 # Important: Talisman usually scans current changes, but fetch-depth 0 is good practice
 
       - name: Run Secret Scanner
         uses: orbitcluster/oc-cicd-secretscanner-workflow@v1.0.0
