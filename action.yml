@@ -1,5 +1,5 @@
 name: "Secret Scanner"
-description: "Scans for secrets using Gitleaks"
+description: "Scans for secrets using Talisman"
 inputs:
   fetch-depth:
     description: "Number of commits to fetch. 0 indicates all history for all branches and tags."
@@ -12,7 +12,13 @@ runs:
       with:
         fetch-depth: ${{ inputs.fetch-depth }}
 
-    - name: Run Gitleaks
-      uses: gitleaks/gitleaks-action@v2
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+    - name: Install Talisman
+      shell: bash
+      run: |
+        curl --silent -o talisman https://github.com/thoughtworks/talisman/releases/latest/download/talisman_linux_amd64
+        chmod +x talisman
+        sudo mv talisman /usr/local/bin/
+
+    - name: Run Talisman
+      shell: bash
+      run: talisman --scan
