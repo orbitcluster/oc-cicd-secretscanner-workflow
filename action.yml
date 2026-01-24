@@ -30,6 +30,10 @@ runs:
         template: "@${{ github.action_path }}/trivy-markdown.tpl"
         output: "trivy-results.md"
 
+    - name: Print Trivy Results
+      shell:
+      run: cat trivy-results.md
+
     - name: Post Trivy Results to PR Comment
       if: github.event_name == 'pull_request'
       shell: bash
