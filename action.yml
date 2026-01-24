@@ -39,7 +39,7 @@ runs:
         output: "trivy-results.md"
 
     - name: Print Trivy Results
-      shell:
+      shell: bash
       run: cat trivy-results.md
 
     - name: Post Trivy Results to PR Comment
