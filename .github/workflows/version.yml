@@ -16,6 +16,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+
       - name: Semantic Version
         uses: orbitcluster/oc-cicd-release-workflow@v1
         with:

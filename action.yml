@@ -1,10 +1,14 @@
 name: "Secret Scanner"
-description: "Scans for secrets using Talisman"
+description: "Scans for secrets using Trivy"
 inputs:
   fetch-depth:
     description: "Number of commits to fetch. 0 indicates all history for all branches and tags."
     required: false
     default: "0"
+  github-token:
+    description: "GitHub Token for commenting on PRs"
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -12,13 +16,45 @@ runs:
       with:
         fetch-depth: ${{ inputs.fetch-depth }}
 
-    - name: Install Talisman
+    - name: Install tree and show folder recursively
       shell: bash
       run: |
-        curl --silent -o talisman https://github.com/thoughtworks/talisman/releases/latest/download/talisman_linux_amd64
-        chmod +x talisman
-        sudo mv talisman /usr/local/bin/
+        sudo apt-get update
+        sudo apt-get install tree
+        tree .
 
-    - name: Run Talisman
+    - name: Run Trivy vulnerability scanner in repo mode
+      id: trivy_run
+      uses: aquasecurity/trivy-action@0.29.0
+      continue-on-error: true
+      with:
+        scan-type: "fs"
+        scan-ref: "."
+        scanners: "secret"
+        trivy-config: "${{ github.action_path }}/config/trivy.yaml"
+        exit-code: "1"
+        severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+        format: "template"
+        template: "@${{ github.action_path }}/trivy-markdown.tpl"
+        output: "trivy-results.md"
+
+    - name: Print Trivy Results
       shell: bash
-      run: talisman --scan
+      run: cat trivy-results.md
+
+    - name: Post Trivy Results to PR Comment
+      if: github.event_name == 'pull_request'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: |
+        if [ -s trivy-results.md ]; then
+          gh pr comment ${{ github.event.pull_request.number }} --body-file trivy-results.md
+        fi
+
+    - name: Fail if secrets found
+      if: steps.trivy_run.outcome == 'failure'
+      shell: bash
+      run: |
+        echo "Secrets found! Failing the build."
+        exit 1
