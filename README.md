@@ -15,6 +15,8 @@ In modern cloud-native development, the accidental exposure of secrets is a crit
 
 We utilize [Trivy](https://github.com/aquasecurity/trivy), a comprehensive security scanner, to detect hardcoded secrets like passwords, API keys, and tokens. Trivy is configured to scan the repository for potential leaks.
 
+**Feature Update:** We have implemented **Aggressive Secret Scanning** rules to detect a broader range of potential secrets (high entropy strings, generic password variables, etc.), including Low, Medium, High, and Critical severities.
+
 ### 🪝 Robust Pre-commit Hooks
 
 To maintain a high standard of code hygiene and security, this repository comes configured with a suite of **pre-commit hooks**. These hooks run automatically every time `git commit` is executed, performing the following checks:
@@ -90,7 +92,7 @@ jobs:
 
 ### Inputs
 
-| Input          | Description                                                                            | Default |
-| :------------- | :------------------------------------------------------------------------------------- | :------ |
-| `fetch-depth`  | Number of commits to fetch. `0` fetches all history (recommended for secret scanning). | `0`     |
-| `github-token` | GitHub Token (`${{ secrets.GITHUB_TOKEN }}`) for commenting on PRs.                    | N/A     |
+| Input          | Description                                                                            | Default               |
+| :------------- | :------------------------------------------------------------------------------------- | :-------------------- |
+| `fetch-depth`  | Number of commits to fetch. `0` fetches all history (recommended for secret scanning). | `0`                   |
+| `github-token` | GitHub Token (`${{ secrets.GITHUB_TOKEN }}`) for commenting on PRs.                    | `${{ github.token }}` |
