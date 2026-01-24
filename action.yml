@@ -8,6 +8,7 @@ inputs:
   github-token:
     description: "GitHub Token for commenting on PRs"
     required: true
+    default: ${{ github.token }}
 
 runs:
   using: "composite"
