@@ -1,3 +1,5 @@
+### Secret Scanning Analysis Results
+
 {{- if . }}
 | Severity | Description | Evidence | Location |
 |:---:|:---|:---|:---|
