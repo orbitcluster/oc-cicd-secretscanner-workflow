@@ -18,7 +18,7 @@ runs:
 
     - name: Run Trivy vulnerability scanner in repo mode
       id: trivy_run
-      uses: aquasecurity/trivy-action@v0.33.0
+      uses: aquasecurity/trivy-action@0.29.0
       continue-on-error: true
       with:
         scan-type: "fs"
