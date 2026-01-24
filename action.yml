@@ -16,6 +16,13 @@ runs:
       with:
         fetch-depth: ${{ inputs.fetch-depth }}
 
+    - name: Install tree and show folder recursively
+      shell: bash
+      run: |
+        apt-get update
+        apt-get install tree
+        tree .
+
     - name: Run Trivy vulnerability scanner in repo mode
       id: trivy_run
       uses: aquasecurity/trivy-action@0.29.0
