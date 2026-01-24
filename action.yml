@@ -24,7 +24,7 @@ runs:
         scan-type: "fs"
         scan-ref: "."
         scanners: "secret"
-        trivy-config: "trivy.yaml"
+        trivy-config: "${{ github.action_path }}/config/trivy.yaml"
         exit-code: "1"
         severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
         format: "template"
