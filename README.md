@@ -9,7 +9,7 @@ In modern cloud-native development, the accidental exposure of secrets is a crit
 1.  **Local Development**: Checking code on the developer's machine before it is ever committed.
 2.  **Continuous Integration**: Verifying every push and pull request to ensure no secrets slipped through.
 
-## Key Features
+## Key Feature
 
 ### 🛡️ Automated Secret Detection (Trivy)
 
